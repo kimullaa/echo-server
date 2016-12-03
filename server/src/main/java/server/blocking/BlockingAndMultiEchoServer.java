@@ -26,6 +26,8 @@ public class BlockingAndMultiEchoServer implements EchoServer {
             while (true) {
                 Socket socket = ssc.socket().accept();
                 log.info("別スレッドを起動します from " + socket.getRemoteSocketAddress());
+                // Socketがcloseされるとレスポンスが書き込めないので
+                // レスポンスを返却するスレッドでcloseする
                 new Thread(new EchoTask(socket)).start();
             }
         } catch (IOException e) {
@@ -42,20 +44,23 @@ public class BlockingAndMultiEchoServer implements EchoServer {
 
         @Override
         public void run() {
-            try {
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);) {
-                    String line;
-                    while ((line = in.readLine()) != null) {
-                        log.info("recieved " + line + " from " + socket.getRemoteSocketAddress());
-                        log.info("echo " + line + " to " + socket.getRemoteSocketAddress());
-                        out.println(line);
-                    }
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    log.info("recieved " + line + " from " + socket.getRemoteSocketAddress());
+                    log.info("echo " + line + " to " + socket.getRemoteSocketAddress());
+                    out.println(line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
     }
 }

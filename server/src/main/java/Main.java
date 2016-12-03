@@ -7,7 +7,7 @@ import server.nonblocking.NonBlockingEchoServer;
  */
 public class Main {
     public static void main(String[] args) {
-        EchoServer server = new NonBlockingEchoServer();
+        EchoServer server = new BlockingAndMultiEchoServer();
         server.start();
     }
 }
