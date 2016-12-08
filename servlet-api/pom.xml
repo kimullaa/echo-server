@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>example.com</groupId>
-    <artifactId>async-context</artifactId>
+    <artifactId>servlet-api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>

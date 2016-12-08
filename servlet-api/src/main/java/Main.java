@@ -15,7 +15,7 @@ public class Main {
         tomcat.setPort(8080);
 
         // アプリケーションのルートとWEB資材配置場所の指定
-        StandardContext ctx = (StandardContext) tomcat.addWebapp("/async-context", new File("src/main/webapp").getAbsolutePath());
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("/servlet-api", new File("src/main/webapp").getAbsolutePath());
 
         // WEB-INF/classes 相当のディレクトリにtarget/classesを追加して指定する
         File additionWebInfClasses = new File("target/classes");
