@@ -30,6 +30,7 @@ public class BlockingAndSingleEchoServer implements EchoServer {
                 ) {
                     String line;
                     while ((line = in.readLine()) != null) {
+                        log.info("recieved " + line + " from " + sc.socket().getRemoteSocketAddress());
                         log.info("echo " + line + " to " + sc.socket().getRemoteSocketAddress());
                         out.println(line);
                     }
